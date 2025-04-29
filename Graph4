@@ -1,0 +1,76 @@
+Practical No. 4
+Code -
+#include <iostream>
+#include <algorithm>
+#include <climits>
+using namespace std;
+class Graph {
+ int cgraph[5][5];
+ int v;
+ int color[5];
+ int bestColoring[5];
+ int minColors;
+public:
+ Graph(int numVertices, int adjMatrix[5][5]) {
+ v = numVertices;
+ for (int i = 0; i < v; i++) {
+ for (int j = 0; j < v; j++) {
+ cgraph[i][j] = adjMatrix[i][j];
+ }
+ }
+ fill(color, color + v, -1);
+ fill(bestColoring, bestColoring + v, -1);
+ minColors = INT_MAX;
+ }
+ bool isSafe(int node, int col) {
+ for (int i = 0; i < v; i++) {
+ if (cgraph[node][i] == 1 && color[i] == col) {
+ return false;
+ }
+ }
+ return true;
+ }
+ void branchAndBound(int node, int usedColors) {
+ if (node == v) {
+ if (usedColors < minColors) {
+ minColors = usedColors;
+ copy(color, color + v, bestColoring);
+ }
+ return;
+ }
+ for (int col = 0; col < v; col++) {
+ if (isSafe(node, col)) {
+ color[node] = col;
+ int nextUsedColors = max(usedColors, col + 1);
+ if (nextUsedColors < minColors) {
+ branchAndBound(node + 1, nextUsedColors);
+ }
+ color[node] = -1;
+ }
+ }
+ }
+ void solveGraphColoring() {
+ branchAndBound(0, 0);
+ if (minColors != INT_MAX) {
+ cout << "Solution found with " << minColors << " colors:" << endl;
+ for (int i = 0; i < v; i++) {
+ cout << "Vertex " << i << " -> Color " << bestColoring[i] << endl;
+ }
+ } else {
+ cout << "No solution exists." << endl;
+ }
+ }
+};
+int main() {
+ int adjMatrix[5][5] = {
+ {0, 1, 1, 0, 0},
+ {1, 0, 0, 1, 1},
+ {1, 0, 0, 0, 1},
+ {0, 1, 0, 0, 0},
+ {0, 1, 1, 0, 0}
+ };
+ int numVertices = 5;
+ Graph g(numVertices, adjMatrix);
+ g.solveGraphColoring();
+ return 0;
+}
