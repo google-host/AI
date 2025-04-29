@@ -1,74 +1,120 @@
-
 #include <iostream>
 #include <climits>
 #include <cmath>
 #include <vector>
 #include <queue>
 using namespace std;
+
+// Structure to store coordinates of each vertex
 struct Vertex {
- int x, y;
+    int x, y;
 };
+
 class Graph {
 private:
- int vertices, adjMatrix[10][10];
- Vertex vertexCoordinates[10];
+    int vertices;
+    int adjMatrix[10][10]; // Adjacency matrix to store edge weights
+    Vertex vertexCoordinates[10]; // Store coordinates of each vertex
+
 public:
- Graph(int V) : vertices(V) {
- fill(&adjMatrix[0][0], &adjMatrix[0][0] + 10 * 10, -1);
- }
- void addEdge(int src, int dest, int weight) {
- adjMatrix[src][dest] = adjMatrix[dest][src] = weight;
- }
- void setCoordinates(int node, int x, int y) {
- vertexCoordinates[node] = {x, y};
- }
- double heuristic(int node, int goal) {
- return sqrt(pow(vertexCoordinates[goal].x - vertexCoordinates[node].x, 2) +
- pow(vertexCoordinates[goal].y - vertexCoordinates[node].y, 2));
- }
- void AStar(int start, int goal) {
- vector<int> g(vertices, INT_MAX), parent(vertices, -1);
- vector<bool> visited(vertices, false);
- vector<double> f(vertices, INT_MAX), h(vertices);
- for (int i = 0; i < vertices; ++i) h[i] = heuristic(i, goal);
- g[start] = 0;
- f[start] = h[start];
- priority_queue<pair<double, int>, vector<pair<double, int>>, greater<>> pq;
- pq.push({f[start], start});
- while (!pq.empty()) {
- int currentNode = pq.top().second;
- pq.pop();
- if (visited[currentNode]) continue;
- visited[currentNode] = true;
- if (currentNode == goal) break;
- for (int i = 0; i < vertices; ++i) {
- if (adjMatrix[currentNode][i] != -1 && !visited[i]) {
- int tentativeG = g[currentNode] + adjMatrix[currentNode][i];
- if (tentativeG < g[i]) {
- g[i] = tentativeG;
- f[i] = g[i] + h[i];
- parent[i] = currentNode;
- pq.push({f[i], i});
- }
- }
- }
- }
- if (visited[goal]) {
- cout << "Shortest path cost: " << g[goal] << "\nPath: ";
- for (int node = goal; node != -1; node = parent[node]) cout << node << " ";
- cout << endl;
- } else {
- cout << "No path found\n";
- }
- }
+    // Constructor to initialize the graph with V vertices
+    Graph(int V) : vertices(V) {
+        // Initialize all edge weights to -1 (no edge)
+        fill(&adjMatrix[0][0], &adjMatrix[0][0] + 10 * 10, -1);
+    }
+
+    // Add an undirected edge with a weight
+    void addEdge(int src, int dest, int weight) {
+        adjMatrix[src][dest] = adjMatrix[dest][src] = weight;
+    }
+
+    // Set (x, y) coordinates for each node
+    void setCoordinates(int node, int x, int y) {
+        vertexCoordinates[node] = {x, y};
+    }
+
+    // Heuristic function: Euclidean distance between node and goal
+    double heuristic(int node, int goal) {
+        return sqrt(pow(vertexCoordinates[goal].x - vertexCoordinates[node].x, 2) +
+                    pow(vertexCoordinates[goal].y - vertexCoordinates[node].y, 2));
+    }
+
+    // A* algorithm to find the shortest path from start to goal
+    void AStar(int start, int goal) {
+        vector<int> g(vertices, INT_MAX);        // Cost from start to each node
+        vector<double> f(vertices, INT_MAX);     // f(n) = g(n) + h(n)
+        vector<double> h(vertices);              // Heuristic (h) values
+        vector<int> parent(vertices, -1);        // To reconstruct path
+        vector<bool> visited(vertices, false);   // To track visited nodes
+
+        // Calculate heuristic values for all nodes
+        for (int i = 0; i < vertices; ++i)
+            h[i] = heuristic(i, goal);
+
+        g[start] = 0;
+        f[start] = h[start];
+
+        // Min-heap priority queue: (f value, node)
+        priority_queue<pair<double, int>, vector<pair<double, int>>, greater<>> pq;
+        pq.push({f[start], start});
+
+        while (!pq.empty()) {
+            int currentNode = pq.top().second;
+            pq.pop();
+
+            if (visited[currentNode]) continue;
+            visited[currentNode] = true;
+
+            if (currentNode == goal) break; // Goal found
+
+            // Explore neighbors of current node
+            for (int i = 0; i < vertices; ++i) {
+                if (adjMatrix[currentNode][i] != -1 && !visited[i]) {
+                    int tentativeG = g[currentNode] + adjMatrix[currentNode][i];
+
+                    // If a better path is found
+                    if (tentativeG < g[i]) {
+                        g[i] = tentativeG;
+                        f[i] = g[i] + h[i];
+                        parent[i] = currentNode;
+                        pq.push({f[i], i});
+                    }
+                }
+            }
+        }
+
+        // If goal is visited, print the path and cost
+        if (visited[goal]) {
+            cout << "Shortest path cost: " << g[goal] << "\nPath: ";
+            for (int node = goal; node != -1; node = parent[node])
+                cout << node << " ";
+            cout << endl;
+        } else {
+            cout << "No path found\n";
+        }
+    }
 };
+
 int main() {
- Graph g(5);
- g.setCoordinates(0, 0, 0); g.setCoordinates(1, 1, 2);
- g.setCoordinates(2, 2, 1); g.setCoordinates(3, 3, 3);
- g.setCoordinates(4, 4, 0);
- g.addEdge(0, 1, 5); g.addEdge(0, 2, 10); g.addEdge(1, 2, 3);
- g.addEdge(2, 3, 7); g.addEdge(1, 3, 2); g.addEdge(3, 4, 1);
- g.AStar(0, 3);
- return 0;
+    Graph g(5); // Create graph with 5 nodes
+
+    // Set coordinates for each node (for heuristic)
+    g.setCoordinates(0, 0, 0);
+    g.setCoordinates(1, 1, 2);
+    g.setCoordinates(2, 2, 1);
+    g.setCoordinates(3, 3, 3);
+    g.setCoordinates(4, 4, 0);
+
+    // Add weighted edges between nodes
+    g.addEdge(0, 1, 5);
+    g.addEdge(0, 2, 10);
+    g.addEdge(1, 2, 3);
+    g.addEdge(2, 3, 7);
+    g.addEdge(1, 3, 2);
+    g.addEdge(3, 4, 1);
+
+    // Find shortest path from node 0 to node 3 using A*
+    g.AStar(0, 3);
+
+    return 0;
 }
