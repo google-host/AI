@@ -1,0 +1,37 @@
+public class ankita {
+
+
+  
+    public static void add() {
+        Integer a = 10;
+        Integer b = 20;
+        Integer c = a + b;
+        System.debug('Addition of two numbers ' + a + ' and ' + b + ' is: ' + c);
+    }
+	
+    public static void sub(){
+        Integer a = 30;
+        Integer b = 20;
+        Integer c = a - b;
+        System.debug('Substraction of two numbers ' + a + ' and ' + b + ' is: ' + c);
+    }
+    
+    public static void multi(){
+        Integer a = 30;
+        Integer b = 20;
+        Integer c = a * b;
+        System.debug('Multiplication of two numbers ' + a + ' and ' + b + ' is: ' +c);
+    }
+    public static void Div(){
+        Integer a = 30;
+        Integer b = 20;
+        Integer c = a / b;
+        System.debug('division of two numbers ' + a + ' and ' + b + ' is: ' +c);
+    }
+    
+
+}
+ankita.add();
+ankita.sub();
+ankita.multi();
+ankita.Div();
