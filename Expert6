@@ -1,0 +1,59 @@
+Practical No. 6
+Code-
+#include<iostream>
+using namespace std;
+void performance(int workQuality, int leadership, int punctuality, int teamwork)
+{
+ if(workQuality==5 && leadership==5 && punctuality==5 && teamwork==5)
+ {
+ cout<<"Excellent Performance of Employee.. Should be Promoted";
+ }
+ else if(workQuality >= 4 && leadership >= 4 && punctuality >= 4 && teamwork >= 4)
+ {
+ cout<<"Good work Performance.. Keep Going"<<endl;
+ }
+ else if(workQuality >= 3 && leadership >= 3 && punctuality >= 3 && teamwork >= 3)
+ {
+ cout<<"Average Performance.. Needs improvement"<<endl;
+ }
+ else if(workQuality >= 2 && leadership >= 2 && punctuality >= 2 && teamwork >= 2)
+ {
+ cout<<"Below Average Performance.. Improvement needed for better results."<<endl;
+ }
+ else if(workQuality >= 1 && leadership >= 1 && punctuality >= 1 && teamwork >= 1)
+ {
+ cout<<"Poor Performance.. Performance needs immediate improvement"<<endl;
+ }
+ else
+ {
+ cout<<"thank you for the review"<<endl;
+ }
+}
+int main()
+{
+ int workQuality, leadership, punctuality, teamwork;
+ cout<<"Enter the ratings for the following crateria (1 to 5)"<<endl;
+
+ cout<<"Work Quality: ";
+ cin>>workQuality;
+
+ cout<<"\nLeadership: ";
+ cin>>leadership;
+
+ cout<<"\nPunctuality: ";
+ cin>>punctuality;
+
+ cout<<"\nTeamwork: ";
+ cin>>teamwork;
+
+ if (workQuality<1 || workQuality>5 || leadership<1 || leadership>5 || punctuality<1 || punctuality>5
+|| teamwork<1 || teamwork>5)
+ {
+ cout<<"Enter the valid Ratings"<<endl;
+ }
+ else
+ {
+ performance(workQuality, leadership, punctuality, teamwork);
+ }
+ return 0;
+}
