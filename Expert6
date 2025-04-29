@@ -1,59 +1,71 @@
-Practical No. 6
-Code-
 #include<iostream>
 using namespace std;
+
+// Function to evaluate performance based on four criteria
 void performance(int workQuality, int leadership, int punctuality, int teamwork)
 {
- if(workQuality==5 && leadership==5 && punctuality==5 && teamwork==5)
- {
- cout<<"Excellent Performance of Employee.. Should be Promoted";
- }
- else if(workQuality >= 4 && leadership >= 4 && punctuality >= 4 && teamwork >= 4)
- {
- cout<<"Good work Performance.. Keep Going"<<endl;
- }
- else if(workQuality >= 3 && leadership >= 3 && punctuality >= 3 && teamwork >= 3)
- {
- cout<<"Average Performance.. Needs improvement"<<endl;
- }
- else if(workQuality >= 2 && leadership >= 2 && punctuality >= 2 && teamwork >= 2)
- {
- cout<<"Below Average Performance.. Improvement needed for better results."<<endl;
- }
- else if(workQuality >= 1 && leadership >= 1 && punctuality >= 1 && teamwork >= 1)
- {
- cout<<"Poor Performance.. Performance needs immediate improvement"<<endl;
- }
- else
- {
- cout<<"thank you for the review"<<endl;
- }
+    // All parameters rated 5 — excellent
+    if(workQuality==5 && leadership==5 && punctuality==5 && teamwork==5)
+    {
+        cout<<"Excellent Performance of Employee.. Should be Promoted";
+    }
+    // All parameters rated 4 or higher — good
+    else if(workQuality >= 4 && leadership >= 4 && punctuality >= 4 && teamwork >= 4)
+    {
+        cout<<"Good work Performance.. Keep Going"<<endl;
+    }
+    // All parameters rated 3 or higher — average
+    else if(workQuality >= 3 && leadership >= 3 && punctuality >= 3 && teamwork >= 3)
+    {
+        cout<<"Average Performance.. Needs improvement"<<endl;
+    }
+    // All parameters rated 2 or higher — below average
+    else if(workQuality >= 2 && leadership >= 2 && punctuality >= 2 && teamwork >= 2)
+    {
+        cout<<"Below Average Performance.. Improvement needed for better results."<<endl;
+    }
+    // All parameters rated 1 or higher — poor
+    else if(workQuality >= 1 && leadership >= 1 && punctuality >= 1 && teamwork >= 1)
+    {
+        cout<<"Poor Performance.. Performance needs immediate improvement"<<endl;
+    }
+    else
+    {
+        // If no valid pattern matched (this may not trigger due to input validation)
+        cout<<"Thank you for the review"<<endl;
+    }
 }
+
 int main()
 {
- int workQuality, leadership, punctuality, teamwork;
- cout<<"Enter the ratings for the following crateria (1 to 5)"<<endl;
+    int workQuality, leadership, punctuality, teamwork;
 
- cout<<"Work Quality: ";
- cin>>workQuality;
+    // Prompt user to enter ratings
+    cout<<"Enter the ratings for the following criteria (1 to 5)"<<endl;
 
- cout<<"\nLeadership: ";
- cin>>leadership;
+    cout<<"Work Quality: ";
+    cin>>workQuality;
 
- cout<<"\nPunctuality: ";
- cin>>punctuality;
+    cout<<"\nLeadership: ";
+    cin>>leadership;
 
- cout<<"\nTeamwork: ";
- cin>>teamwork;
+    cout<<"\nPunctuality: ";
+    cin>>punctuality;
 
- if (workQuality<1 || workQuality>5 || leadership<1 || leadership>5 || punctuality<1 || punctuality>5
-|| teamwork<1 || teamwork>5)
- {
- cout<<"Enter the valid Ratings"<<endl;
- }
- else
- {
- performance(workQuality, leadership, punctuality, teamwork);
- }
- return 0;
+    cout<<"\nTeamwork: ";
+    cin>>teamwork;
+
+    // Validate if all inputs are in the range [1, 5]
+    if (workQuality<1 || workQuality>5 || leadership<1 || leadership>5 || 
+        punctuality<1 || punctuality>5 || teamwork<1 || teamwork>5)
+    {
+        cout<<"Enter the valid Ratings"<<endl;
+    }
+    else
+    {
+        // If inputs are valid, call the performance evaluator
+        performance(workQuality, leadership, punctuality, teamwork);
+    }
+
+    return 0;
 }
